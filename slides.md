@@ -30,13 +30,16 @@ layout: default
 1. The next slide is a **tier list**. Every feature in this deck starts in the **Unranked** drawer on its right edge.
 2. Click a chip to open that feature's slide. Visited chips are marked.
 3. Rank it: drag the chip into a tier, or click the badge in the slide's top-right corner.
-4. Press **T** to return to the tier list.
+4. Press **T** to return to the tier list, or **E** to jump to the end.
+
+Press the laser button in the nav bar, or hold **Shift** and drag, to draw a fading laser trail. It mirrors between presenter and audience windows.
 
 Rankings are saved in the browser, so a reload keeps them. **Reset** in the drawer clears them.
 
 ---
 layout: full
 routeAlias: tiers
+hotkey: t
 class: '!p-1'
 ---
 
@@ -232,6 +235,7 @@ This slide's frontmatter is just `concept: Single Sign-On`. The emoji is optiona
 
 ---
 layout: intro
+hotkey: e
 ---
 
 # Thank You

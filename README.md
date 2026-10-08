@@ -18,7 +18,8 @@ pnpm dev           # http://localhost:3030
 - The tier list slide is the hub. Every concept starts in the **Unranked** drawer on its right edge. Hover over the drawer to open it, or pin it open with 📍.
 - Click a chip to open its slide. Drag a chip between tiers (or back to the drawer) to rank it.
 - On a concept slide, the tier badge in the top-right corner shows the current tier. Click it to pick a tier without going back.
-- Press `T` from any slide to return to the tier list. Press `End` to jump to the last slide.
+- Press `T` from any slide to return to the tier list, `E` to jump to the closing slide, or `End` for the last slide. See [Hotkeys](#hotkeys).
+- Laser pointer: toggle it with the scribble button in the nav bar, or hold `Shift` and drag. The trail fades out, and it mirrors between the presenter view and the audience view.
 - Rankings and visited state are saved in `localStorage`, so a reload keeps them. **Reset** in the drawer moves everything back to Unranked. Clear rankings before you go on stage.
 
 ## Writing slides
@@ -56,13 +57,39 @@ conceptOf: dark-mode
 ---
 ```
 
+### Hotkeys
+
+Any slide can claim a key that jumps to it from anywhere in the deck:
+
+```md
+---
+hotkey: e
+---
+```
+
+The demo deck uses `t` for the tier list and `e` for the thank-you slide. Avoid keys Slidev already uses, such as `d` (dark mode), `o` (overview) and `g` (go to). Hotkeys are read when the deck loads, so reload after adding one.
+
+### Laser pointer
+
+You can tune the laser in the headmatter at the top of `slides.md`:
+
+```yaml
+themeConfig:
+  laserColor: '#ef4444'
+  laserWidth: 6        # px
+  laserFade: 900       # ms until the trail disappears
+  laserEnabled: false  # true to start with the laser on
+```
+
+In presenter mode the trail follows Slidev's synced cursor, so turning the laser on also turns on the presenter cursor.
+
 ### Layouts
 
 | Layout | Use |
 | --- | --- |
 | `concept` | Detail slide: title, emoji, tier badge. Add a `::right::` slot to split it into text (left) and code or media (right). |
 | `intro` | Title and closing slides. Default slot at the top, `::bottom::` at the bottom, optional `::right::` filling the right half. |
-| `full` + `<TierList />` | The hub. Keep `routeAlias: tiers`, since the `T` shortcut jumps there. |
+| `full` + `<TierList />` | The hub. Give it `routeAlias: tiers` and `hotkey: t`. |
 
 For a text-and-iframe split without `::right::`, use a grid: `<div class="grid grid-cols-[1fr_2fr] gap-6 h-full">`.
 
@@ -104,7 +131,8 @@ For a text-and-iframe split without `::right::`, use a grid: `<div class="grid g
 | `components/TierList.vue` | Drag-and-drop tier list (`vuedraggable`). Tier colors are in `COLORS`. |
 | `layouts/concept.vue` | Detail slide frame with the tier badge picker. Tier colors are in the `.t-*` classes. |
 | `components/LiveDemo.vue`, `DemoReel.vue`, `StepFocus.vue` | See [Components](#components) |
-| `setup/shortcuts.ts` | The `T` and `End` hotkeys |
+| `setup/shortcuts.ts` | Registers each slide's `hotkey`, plus `End` |
+| `laser.ts`, `global-top.vue`, `custom-nav-controls.vue` | Laser pointer: settings, drawing layer and nav-bar toggle. Ported from [developmentseed/ds-slidev-template](https://github.com/developmentseed/ds-slidev-template). |
 | `public/demo-app/` | A stand-in app for the demo slides. `?feature=<id>` highlights part of its UI. Replace it with your app's URLs. |
 
 If you rename the tiers, update the colors in both `TierList.vue` and `concept.vue`.
